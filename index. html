@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ChatGPT Clone</title>
+<style>
+body { font-family: Arial; background:#f5f5f5; padding:20px; }
+.container { max-width:600px; margin:auto; background:white; padding:20px; border-radius:10px; }
+.msg { margin:10px 0; padding:10px; border-radius:6px; }
+.user { background:#d5e8ff; text-align:right; }
+.bot { background:#e8e8e8; text-align:left; }
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h2>ChatGPT Clone (Your AI)</h2>
+    <div id="chatBox"></div>
+    <input id="message" placeholder="Type message..." style="width:80%; padding:10px">
+    <button onclick="sendMessage()" style="padding:10px;">Send</button>
+</div>
+
+<script>
+async function sendMessage() {
+    let msg = document.getElementById("message").value;
+
+    document.getElementById("chatBox").innerHTML +=
+        `<div class='msg user'>${msg}</div>`;
+
+    let res = await fetch("https://YOUR-BACKEND-URL/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+    });
+
+    let data = await res.json();
+
+    document.getElementById("chatBox").innerHTML +=
+        `<div class='msg bot'>${data.reply}</div>`;
+
+    document.getElementById("message").value = "";
+}
+</script>
+
+</body>
+</html>
